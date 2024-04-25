@@ -8,7 +8,7 @@ torch.manual_seed(1)
 
 # Download and load the training set
 transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize(mean=(0.5), std=(0.5))])
-trainset = torchvision.datasets.MNIST(root="data2", download=True, transform = transform)
+trainset = torchvision.datasets.MNIST(root="data", download=True, transform = transform)
 
 # Create a DataLoader to efficiently load the data in Instancees
 batch_size = 64
