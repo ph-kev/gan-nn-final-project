@@ -140,5 +140,5 @@ for curr_epoch in range(num_epoch):
         torch.save(generator.state_dict(), "gen-params-" + str(num_epoch))
 
 # Save parameters after training is finished 
-torch.save(discriminator.state_dict(), "dis-params-" + str(num_epoch))
-torch.save(generator.state_dict(), "gen-params-" + str(num_epoch))
+torch.save(discriminator.state_dict(), "WGAN_params/dis-params-" + str(num_epoch))
+torch.save(generator.state_dict(), "WGAN_params/gen-params-" + str(num_epoch))
