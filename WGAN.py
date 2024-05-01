@@ -134,10 +134,10 @@ for curr_epoch in range(num_epoch):
         gen_loss_item = gen_loss.item()
         print(f"Current epoch: {curr_epoch} | Dis_Loss: {dis_loss_item:3f} | Gen_Loss: {gen_loss_item:3f}")
         del batch_real_image, gen_noise, dis_noise
-    # Save parameters every 5 epochs so that code will run smoothly 
+    # Save parameters every 5 epochs 
     if curr_epoch % 5 == 0:
-        torch.save(discriminator.state_dict(), "dis-params-" + str(num_epoch))
-        torch.save(generator.state_dict(), "gen-params-" + str(num_epoch))
+        torch.save(discriminator.state_dict(), "GAN_params/dis-params-" + str(num_epoch))
+        torch.save(generator.state_dict(), "GAN_params/gen-params-" + str(num_epoch))
 
 # Save parameters after training is finished 
 torch.save(discriminator.state_dict(), "WGAN_params/dis-params-" + str(num_epoch))
