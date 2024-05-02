@@ -70,9 +70,22 @@ for curr_epoch in range(num_epoch):
         print(f"Current epoch: {curr_epoch} | Dis_Loss: {dis_loss_item:3f} | Gen_Loss: {gen_loss_item:3f}")
         del batch_real_image, gen_noise, dis_noise
     # Save parameters every 5 epochs 
-    if curr_epoch % 5 == 0:
-        torch.save(discriminator.state_dict(), "GAN_params/dis-params-" + str(num_epoch))
-        torch.save(generator.state_dict(), "GAN_params/gen-params-" + str(num_epoch))
+    # Save parameters every 1, 2, 5, 10, and 50 epochs 
+    if curr_epoch == 1: 
+        torch.save(discriminator.state_dict(), "WGAN_params/dis-params-1")
+        torch.save(generator.state_dict(), "WGAN_params/gen-params-1")
+    if curr_epoch == 2: 
+        torch.save(discriminator.state_dict(), "WGAN_params/dis-params-2")
+        torch.save(generator.state_dict(), "WGAN_params/gen-params-2")
+    if curr_epoch == 5: 
+        torch.save(discriminator.state_dict(), "WGAN_params/dis-params-5")
+        torch.save(generator.state_dict(), "WGAN_params/gen-params-5")
+    if curr_epoch == 10: 
+        torch.save(discriminator.state_dict(), "WGAN_params/dis-params-10")
+        torch.save(generator.state_dict(), "WGAN_params/gen-params-10")
+    if curr_epoch == 50: 
+        torch.save(discriminator.state_dict(), "WGAN_params/dis-params-50")
+        torch.save(generator.state_dict(), "WGAN_params/gen-params-50")
 
 # Save parameters after training is finished 
 torch.save(discriminator.state_dict(), "WGAN_params/dis-params-" + str(num_epoch))

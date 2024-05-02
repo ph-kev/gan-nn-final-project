@@ -4,6 +4,9 @@ import torchvision
 from torchvision import transforms
 import torch.nn as nn
 
+torch.manual_seed(1)
+np.random.seed(1)
+
 # Define class for generator and discriminator 
 # https://arxiv.org/pdf/1511.06434.pdf 
 # The paper about deep convolutional generative adversarial networks (DCGAN) give 

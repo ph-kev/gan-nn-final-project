@@ -99,8 +99,7 @@ for curr_epoch in range(1, num_epoch + 1):
     dis_real_arr.append(dis_real)
     dis_fake_arr.append(dis_fake) 
     print(f"Current epoch: {curr_epoch} | Dis_Loss: {dis_loss:3f} | Gen_Loss: {gen_loss:3f} | Fake Probs: {dis_fake:3f} | Real Probs: {dis_real:3f}")
-    # Save parameters every 5 epochs 
-    
+    # Save parameters every 1, 2, 5, 10, and 50 epochs 
     if curr_epoch == 1: 
         torch.save(discriminator.state_dict(), "GAN_params/dis-params-1")
         torch.save(generator.state_dict(), "GAN_params/gen-params-1")
