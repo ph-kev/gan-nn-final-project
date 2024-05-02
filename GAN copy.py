@@ -16,13 +16,62 @@ trainset = torchvision.datasets.MNIST(root="data", download=True, transform = tr
 batch_size = 64
 data_loader = torch.utils.data.DataLoader(trainset, batch_size=batch_size, shuffle=True, drop_last = True)
 
+# Define class for generator and discriminator 
+# https://arxiv.org/pdf/1511.06434.pdf 
+# The paper about deep convolutional generative adversarial networks (DCGAN) give 
+# advice about making DCGANs. It is basically the same template as here. 
+class Generator(nn.Module):
+    def __init__(self, input_size, n_filters):
+        super().__init__()
+
+        self.network = nn.Sequential(
+            nn.ConvTranspose2d(input_size, n_filters*4, 4, 1, 0, bias=False),
+            nn.BatchNorm2d(n_filters*4),
+            nn.LeakyReLU(0.2),
+            nn.ConvTranspose2d(n_filters*4, n_filters*2, 3, 2, 1, bias=False),
+            nn.BatchNorm2d(n_filters*2),
+            nn.LeakyReLU(0.2),
+            nn.ConvTranspose2d(n_filters*2, n_filters, 4, 2, 1, bias=False),
+            nn.BatchNorm2d(n_filters),
+            nn.LeakyReLU(0.2),
+            nn.ConvTranspose2d(n_filters, 1, 4, 2, 1, bias=False),
+            nn.Tanh()
+        )
+
+    def forward(self, x):
+        'Forward pass'
+        output = self.network(x)
+        return output
+
+class Discriminator(nn.Module):
+    def __init__(self, n_filters):
+        super().__init__()
+
+        self.network = nn.Sequential(
+            nn.Conv2d(1, n_filters, 4, 2, 1, bias=False),
+            nn.LeakyReLU(0.2),
+            nn.Conv2d(n_filters, n_filters*2, 4, 2, 1, bias=False),
+            nn.BatchNorm2d(n_filters * 2),
+            nn.LeakyReLU(0.2),
+            nn.Conv2d(n_filters*2, n_filters*4, 3, 2, 1, bias=False),
+            nn.BatchNorm2d(n_filters*4),
+            nn.LeakyReLU(0.2),
+            nn.Conv2d(n_filters*4, 1, 4, 1, 0, bias=False),
+            nn.Sigmoid()
+        )
+
+    def forward(self, x):
+        'Forward pass'
+        output = self.network(x)
+        return output.view(-1, 1).squeeze(0) 
+
 device = "cuda" if torch.cuda.is_available() else "cpu"
 print(f"Using '{device}' device.")
 
 gen_input_size = 100 
 image_size = (28, 28)
-n_filters_gen = 128
-n_filters_dis = 128
+n_filters_gen = 32 
+n_filters_dis = 32
 
 generator = Generator(100, n_filters_gen)
 discriminator = Discriminator(n_filters_dis)
