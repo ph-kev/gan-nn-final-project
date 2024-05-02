@@ -79,7 +79,7 @@ def value_func(real_output, fake_output):
    dis_loss_fake = -(1 / num_real_samples) * torch.sum(torch.log(1.0 - fake_output)).item()
    return dis_loss_real, dis_loss_fake
 
-# The loss function is for WGFAN 
+# The loss function is for WGAN 
 def wgan_discriminator_loss(real_output, fake_output):
   '''Added negative sign to minimize instead of maximize'''
   loss = -(real_output.mean() - fake_output.mean())

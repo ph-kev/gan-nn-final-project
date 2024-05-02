@@ -3,10 +3,13 @@ import torch
 import torchvision
 from torchvision import transforms
 import torch.nn as nn
+import pickle
 
 from nn_helper import *
 
+# Set seed for reproducibility 
 torch.manual_seed(1)
+np.random.seed(1)
 
 # Download and load the training set
 transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize(mean=(0.5), std=(0.5))])
@@ -34,6 +37,12 @@ gen_optimizer = torch.optim.Adam(generator.parameters(), lr = 0.0002, betas=(0.5
 dis_optimizer = torch.optim.Adam(discriminator.parameters(), lr = 0.0002, betas=(0.5, 0.999))
 
 num_epoch = 100
+
+dis_loss_arr = []
+gen_loss_arr = []
+dis_real_arr = []
+dis_fake_arr = []
+
 for curr_epoch in range(1, num_epoch + 1):
     dis_loss_list = []
     gen_loss_list = []
@@ -78,13 +87,20 @@ for curr_epoch in range(1, num_epoch + 1):
         dis_fake_list.append(fake_probs.mean().item())
 
         del batch_real_image, gen_noise
-    # Compute the average loss of the discriminator and generator 
+    # Compute the average loss of the discriminator and generator and probs of discriminator 
     dis_loss = np.mean(dis_loss_list)
     gen_loss = np.mean(gen_loss_list)
     dis_real = np.mean(dis_real_list)
     dis_fake = np.mean(dis_fake_list)
+
+    # Append information to list 
+    dis_loss_arr.append(dis_loss)
+    gen_loss_arr.append(gen_loss)
+    dis_real_arr.append(dis_real)
+    dis_fake_arr.append(dis_fake) 
     print(f"Current epoch: {curr_epoch} | Dis_Loss: {dis_loss:3f} | Gen_Loss: {gen_loss:3f} | Fake Probs: {dis_fake:3f} | Real Probs: {dis_real:3f}")
     # Save parameters every 5 epochs 
+    
     if curr_epoch == 1: 
         torch.save(discriminator.state_dict(), "GAN_params/dis-params-1")
         torch.save(generator.state_dict(), "GAN_params/gen-params-1")
@@ -104,3 +120,16 @@ for curr_epoch in range(1, num_epoch + 1):
 # Save parameters after training is finished 
 torch.save(discriminator.state_dict(), "GAN_params/dis-params-" + str(num_epoch))
 torch.save(generator.state_dict(), "GAN_params/gen-params-" + str(num_epoch))
+
+# Save lists after training 
+with open('saved_losses/gan_dis_loss_arr.pkl', 'wb') as f:
+    pickle.dump(dis_loss_arr, f)
+
+with open('saved_losses/gan_gen_loss_arr.pkl', 'wb') as f:
+    pickle.dump(gen_loss_arr, f)
+
+with open('saved_losses/gan_dis_real_arr.pkl', 'wb') as f:
+    pickle.dump(dis_real_arr, f)
+
+with open('saved_losses/gan_dis_fake_arr.pkl', 'wb') as f:
+    pickle.dump(dis_fake_arr, f)
