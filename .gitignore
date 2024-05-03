@@ -1,3 +1,5 @@
 .venv/
 testing_code.ipynb
 data/
+testing-GAN-generator.ipynb
+testing-WGAN-generator.ipynb

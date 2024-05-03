@@ -74,13 +74,6 @@ def gan_generator_loss(fake_output):
   loss = -(1 / num_fake_samples) * torch.sum((torch.log(fake_output)))
   return loss 
 
-def value_func(real_output, fake_output):
-   num_fake_samples = fake_output.shape[0]
-   num_real_samples = real_output.shape[0]
-   dis_loss_real = -(1 / num_fake_samples) * torch.sum(torch.log(real_output)).item()
-   dis_loss_fake = -(1 / num_real_samples) * torch.sum(torch.log(1.0 - fake_output)).item()
-   return dis_loss_real, dis_loss_fake
-
 # The loss function is for WGAN 
 def wgan_discriminator_loss(real_output, fake_output):
   '''Added negative sign to minimize instead of maximize'''
