@@ -55,31 +55,6 @@ class Discriminator(nn.Module):
         'Forward pass'
         output = self.network(x)
         return output.view(-1, 1).squeeze(0) 
-    
-class Discriminator_WGAN(nn.Module):
-    def __init__(self, n_filters):
-        super().__init__()
-
-        self.network = nn.Sequential(
-            nn.Conv2d(1, n_filters // 4, 4, 2, 1, bias=False),
-            nn.LeakyReLU(0.2),
-            nn.Conv2d(n_filters // 4, n_filters // 2, 4, 2, 1, bias=False),
-            nn.BatchNorm2d(n_filters // 2),
-            nn.LeakyReLU(0.2),
-            nn.Conv2d(n_filters // 2, n_filters, 3, 2, 0, bias=False),
-            nn.BatchNorm2d(n_filters),
-            nn.LeakyReLU(0.2),
-            nn.Conv2d(n_filters, 1, 3, 1, 0, bias=False),
-        )
-
-        self.linear = nn.Linear(1, 1)
-
-    def forward(self, x):
-        'Forward pass'
-        output = self.network(x)
-        output = output.view(-1, 1).squeeze(0) 
-        output = self.linear(output)
-        return output
   
 # Generate noise from normal distribution 
 def create_noise(batch_size, z_size):
