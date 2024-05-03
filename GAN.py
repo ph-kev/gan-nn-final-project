@@ -19,30 +19,35 @@ trainset = torchvision.datasets.MNIST(root="data", download=True, transform = tr
 batch_size = 64
 data_loader = torch.utils.data.DataLoader(trainset, batch_size=batch_size, shuffle=True, drop_last = True)
 
+# Use CUDA if possible 
 device = "cuda" if torch.cuda.is_available() else "cpu"
 print(f"Using '{device}' device.")
 
+# Parameters for generator and discriminator 
 gen_input_size = 100 
 image_size = (28, 28)
 n_filters_gen = 128
 n_filters_dis = 128
 
+# Make generator and discriminator and move to GPU 
 generator = Generator(100, n_filters_gen)
 discriminator = Discriminator(n_filters_dis)
-
 generator.to(device)
 discriminator.to(device)
 
+# Optimizers for generator and discriminator 
 gen_optimizer = torch.optim.Adam(generator.parameters(), lr = 0.0002, betas=(0.5, 0.999))
 dis_optimizer = torch.optim.Adam(discriminator.parameters(), lr = 0.0002, betas=(0.5, 0.999))
 
 num_epoch = 100
 
+# Keep track of loss for discriminator and generator and outputs of discriminator
 dis_loss_arr = []
 gen_loss_arr = []
 dis_real_arr = []
 dis_fake_arr = []
 
+# Training loop 
 for curr_epoch in range(1, num_epoch + 1):
     dis_loss_list = []
     gen_loss_list = []
