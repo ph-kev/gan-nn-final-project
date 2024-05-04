@@ -1,7 +1,7 @@
 # GAN Final Project for CS152 
 
 ## Repository explanation 
-The code implement GAN and WGAN and tested them on the MNIST dataset. We also computed the FID score on the generated images. 
+The code implement GAN and WGAN and tested them on the MNIST dataset. We also computed the FID and SSIM scores on the generated images. 
 
 ## File structure 
 `GAN_params` - GAN parameters (`dis-params-n` is the paramters for the discriminator after n epochs and `gen-params-n` is the paramters for the generator after n epochs).
